@@ -1,2 +1,2 @@
-# HTTP-web-servic
+# HTTP-web-service
 Coding exercise: implement an HTTP API web service using NodeJS and ExpressJS
