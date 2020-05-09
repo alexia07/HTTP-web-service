@@ -235,7 +235,7 @@ app.post('/users', (req, res) => create_user(req, res));
 
 app.post('/auth/login', (req,res) => login(req, res));
 
-app.post('/ressources', (req,res) => check_authorization(req, res));
+app.post('/ressources', (req,res) => post_ressource(req, res));
 
 //Console output to confirm app is listening
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
