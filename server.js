@@ -173,8 +173,6 @@ function check_token(jwtToken, res){
     }
     
     return true;
-    //res.status(200)
-    //res.send('Good job\n');
     
 }//End function check_token
 
