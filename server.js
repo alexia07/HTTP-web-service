@@ -186,20 +186,47 @@ function check_token(req, res){
  *          check for its validity          *
  ********************************************/
 
-//curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODg2MDg4MDF9.olYZxe7SXto-cKNno38lzXrqXOR9Jtalkd3U7mv2xIc' "http://localhost:1234/ressources"
+//curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI' "http://localhost:1234/ressources"
 
 function check_authorization(req,res){
     
     if (!req.headers.authorization || req.headers.authorization.indexOf('Bearer ') === -1) {
         res.status(401);
         res.send('Missing token authorization header\n');
-        return;
+        return false;
     }
     
     var token_recieved = req.headers.authorization.split(' ')[1];
     
+    if(check_token(token_recieved, res) == false)
+    {
+        return false;
+    }
     
-}
+    return true;
+}//End function check_authorization
+
+/********************************************
+ * Brief :  check if authorization header   *
+ *          check for its validity          *
+ ********************************************/
+
+//curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI , Content-Type: application/json' -d '{"msg" : "Good job", "author" : "me"}' "http://localhost:1234/ressources"
+
+function post_ressource(req,res){
+    
+    if (check_authorization(req,res) == false){
+        return;
+    }
+    
+    var datajson = req.body;
+    
+    res.status(200);
+    res.send(`data recieced: ${JSON.stringify(datajson)}\n`);
+    return;
+    
+}//End function post_ressource
+
 
 
 //===============SERVER=============
