@@ -1,2 +1,2 @@
 # HTTP-web-service-Pryv
-Coding exercise: 
+Coding exercise: implement an HTTP API web service using NodeJS and ExpressJS
