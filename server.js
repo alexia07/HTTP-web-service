@@ -153,15 +153,13 @@ function login(req,res){
 //Test curl : curl -i -X POST -H 'Content-Type: application/json' -d '{"token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODg2MDg4MDF9.olYZxe7SXto-cKNno38lzXrqXOR9Jtalkd3U7mv2xIc"}' "http://localhost:1234/ressources"
 //Result : "Token outdated, please generate a new one at /users"
 
-function check_token(req, res){
-    
-    jwtToken = req.body.token;
+function check_token(jwtToken, res){
     
     try{
       tokenjson = jwt.verify(jwtToken, SECRET_KEY);
     }catch(e){
         res.status(403);
-        res.send('Invalid authentification token\n');
+        res.send(`Invalid authentification token: ${jwtToken}\n`);
         return false;
     }
     
