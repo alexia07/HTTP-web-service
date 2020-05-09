@@ -217,4 +217,8 @@ app.post('/ressources', (req,res) => check_authorization(req, res));
 //Console output to confirm app is listening
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
 
+//================TOKEN for Tests=========
+//Until 11.05.2020 19:20
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI
+
 
