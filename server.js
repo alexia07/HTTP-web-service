@@ -232,7 +232,7 @@ function post_ressource(req,res){
     var datajson = ressource_json.data;
     var datajson_keys = Object.keys(datajson);
     
-    //Check if datajson is not too big
+    
     if (datajson_keys.length > 10)
     {
         res.status(413);
@@ -261,11 +261,15 @@ function post_ressource(req,res){
         return;
     }
     
-    //If no id, create one
     if(!ressource_json.hasOwnProperty('id'))
     {
         ressource_json.id = cuid();
     }
+    
+    var d = new Date();
+    
+    ressource_json.created = d.getTime()/1000;
+    ressource_json.modified = ressource_json.created;
     
     
     //Write in database
