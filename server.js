@@ -210,6 +210,9 @@ function check_authorization(req,res){
 
 //curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI' -H 'Content-Type: application/json' -d '{"msg" : "Good job", "author" : "me"}' "http://localhost:1234/ressources"
 
+//curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI' -H 'Content-Type: application/json' -d '{"id" : 0, "data" : {"msg" : "Good job", "author" : "me"}}' "http://localhost:1234/ressources"
+
+
 
 function post_ressource(req,res){
     
@@ -226,7 +229,7 @@ function post_ressource(req,res){
         return;
     }
     
-    var datajson = req.body.data;
+    var datajson = ressource_json.data;
     var datajson_keys = Object.keys(datajson);
     
     //Check if datajson is not too big
@@ -259,10 +262,10 @@ function post_ressource(req,res){
     }
     
     //If no id, create one
-    /*if(!req.body.hasOwnProperty('id'))
+    if(!ressource_json.hasOwnProperty('id'))
     {
-        
-    }*/
+        ressource_json.id = cuid();
+    }
     
     
     //Write in database
@@ -300,7 +303,7 @@ function post_ressource(req,res){
     //console.log(datajson[Object.keys(datajson)[1]].length);
     
     res.status(201);
-    res.send(`data recieced: ${JSON.stringify(datajson)}\n`);
+    res.send(`data recieced: ${JSON.stringify(ressource_json)}\n`);
     return;
     
 }//End function post_ressource
