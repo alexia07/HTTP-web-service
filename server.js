@@ -208,7 +208,8 @@ function check_authorization(req,res){
  *          check for its validity          *
  ********************************************/
 
-//curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI , Content-Type: application/json' -d '{"msg" : "Good job", "author" : "me"}' "http://localhost:1234/ressources"
+//curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI' -H 'Content-Type: application/json' -d '{"msg" : "Good job", "author" : "me"}' "http://localhost:1234/ressources"
+
 
 function post_ressource(req,res){
     
@@ -216,9 +217,89 @@ function post_ressource(req,res){
         return;
     }
     
-    var datajson = req.body;
+    var ressource_json = req.body;
     
-    res.status(200);
+    if(!ressource_json.hasOwnProperty('data'))
+    {
+        res.status(415);
+        res.send('The request should contain an object "data"\n');
+        return;
+    }
+    
+    var datajson = req.body.data;
+    var datajson_keys = Object.keys(datajson);
+    
+    //Check if datajson is not too big
+    if (datajson_keys.length > 10)
+    {
+        res.status(413);
+        res.send('Data object must contain at most 10 fields\n');
+        return;
+    }
+    
+    var error_happened = false;
+    datajson_keys.forEach((item, index) => {
+        if((typeof datajson[item] != "string") && !(Number.isInteger(datajson[item]))){
+            error_happened = true;
+            res.status(415);
+            res.send(`The values must be string or integers, the value associated to the key "${item}" is not appropriate.\n`);
+            return;
+        }
+        
+        if (datajson[item].length > 512){
+            error_happened = true;
+            res.status(413);
+            res.send(`The values associated to the key "${item}" is too long. The maximum length is 512.\n`);
+            return;
+        }
+    });
+    
+    if (error_happened) {
+        return;
+    }
+    
+    //If no id, create one
+    /*if(!req.body.hasOwnProperty('id'))
+    {
+        
+    }*/
+    
+    
+    //Write in database
+    /*const urldb = 'mongodb://localhost:27017';
+    const dbName = 'ressourcedb';
+    const client = new MongoClient(urldb);
+
+    client.connect(async function(err) {
+        assert.equal(null, err);
+        console.log("Connected successfully to server");
+        const db = client.db(dbName);
+        const collection = db.collection('ressource');
+        
+        var cursor = await db.collection('ressource').find({"id" = datajson.id}).toArray();
+        
+        console.log(cursor);
+        
+        if (cursor.length < 1)
+        {
+            db.collection('ressource').insertOne(datajson);
+            client.close();
+        
+            res.status(201);
+            res.send(`Data "${datajson.id}" created.\n`);
+        }
+        else 
+        {   
+            client.close();
+            res.status(208);
+            res.send(`The data "${datajson.id}" already exists.\n`);
+        }
+    });*/
+    
+    //console.log(Object.keys(datajson).length);
+    //console.log(datajson[Object.keys(datajson)[1]].length);
+    
+    res.status(201);
     res.send(`data recieced: ${JSON.stringify(datajson)}\n`);
     return;
     
