@@ -16,6 +16,7 @@ const superagent = require('superagent');
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 var jwt = require('jsonwebtoken');
+var cuid = require('cuid');
 
 //==============GLOBAL VARIABLES==============
 var app = express();
