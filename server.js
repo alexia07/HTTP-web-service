@@ -181,7 +181,7 @@ function check_token(jwtToken, res){
 /********************************************
  * Brief :  check if authorization header   *
  *          check for its validity          *
- ********************************************/
+ *******************************************/
 
 //curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI' "http://localhost:1234/ressources"
 
@@ -204,14 +204,17 @@ function check_authorization(req,res){
 }//End function check_authorization
 
 /********************************************
- * Brief :  check if authorization header   *
- *          check for its validity          *
- ********************************************/
+ * Brief :  Run necessary checks, create    *
+ *          the ressource with the required *
+ *          properties and store it in the  * 
+ *          data base                       *
+ *******************************************/
 
 //curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI' -H 'Content-Type: application/json' -d '{"msg" : "Good job", "author" : "me"}' "http://localhost:1234/ressources"
 
 //curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI' -H 'Content-Type: application/json' -d '{"id" : 0, "data" : {"msg" : "Good job", "author" : "me"}}' "http://localhost:1234/ressources"
 
+//id : cka2qjk0j00006kpt2p1jf3tb
 
 
 function post_ressource(req,res){
@@ -273,7 +276,7 @@ function post_ressource(req,res){
     
     
     //Write in database
-    /*const urldb = 'mongodb://localhost:27017';
+    const urldb = 'mongodb://localhost:27017';
     const dbName = 'ressourcedb';
     const client = new MongoClient(urldb);
 
@@ -330,7 +333,7 @@ app.post('/ressources', (req,res) => post_ressource(req, res));
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
 
 //================TOKEN for Tests=========
-//Until 11.05.2020 19:20
+
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI
 
 
