@@ -286,35 +286,55 @@ function post_ressource(req,res){
         const db = client.db(dbName);
         const collection = db.collection('ressource');
         
-        var cursor = await db.collection('ressource').find({"id" = datajson.id}).toArray();
+        //var cursor = await db.collection('ressource').find({}).toArray();
+        //console.log(cursor);
         
-        console.log(cursor);
-        
-        if (cursor.length < 1)
-        {
-            db.collection('ressource').insertOne(datajson);
-            client.close();
-        
-            res.status(201);
-            res.send(`Data "${datajson.id}" created.\n`);
-        }
-        else 
-        {   
-            client.close();
-            res.status(208);
-            res.send(`The data "${datajson.id}" already exists.\n`);
-        }
-    });*/
+        db.collection('ressource').insertOne(ressource_json);
+        client.close();
     
-    //console.log(Object.keys(datajson).length);
-    //console.log(datajson[Object.keys(datajson)[1]].length);
-    
-    res.status(201);
-    res.send(`data recieced: ${JSON.stringify(ressource_json)}\n`);
-    return;
-    
+        res.status(201);
+        res.send(`Data "${ressource_json.id}" created.\n`);
+        return;
+    });
 }//End function post_ressource
 
+
+/********************************************
+ * Brief :                       *
+ *******************************************/
+
+//curl -i -X GET -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI' "http://localhost:1234/ressources"
+
+function get_ressource(req, res){
+    
+    if (check_authorization(req,res) == false){
+        return;
+    }
+    
+    require_json = req.body;
+    console.log(require_json);
+    
+    //Write in database
+    const urldb = 'mongodb://localhost:27017';
+    const dbName = 'ressourcedb';
+    const client = new MongoClient(urldb);
+
+    client.connect(async function(err) {
+        assert.equal(null, err);
+        console.log("Connected successfully to server");
+        const db = client.db(dbName);
+        const collection = db.collection('ressource');
+        
+        var cursor = await db.collection('ressource').find(require_json).toArray();
+        //console.log(cursor);
+        
+        client.close();
+    
+        res.status(200);
+        res.send(`Data found : ${cursor}\n`);
+        return;
+    });
+}//End function get_ressource
 
 
 //===============SERVER=============
@@ -327,13 +347,14 @@ app.post('/users', (req, res) => create_user(req, res));
 
 app.post('/auth/login', (req,res) => login(req, res));
 
+
 app.post('/ressources', (req,res) => post_ressource(req, res));
+app.get('/ressources', (req,res) => get_ressource(req, res));
 
 //Console output to confirm app is listening
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
 
 //================TOKEN for Tests=========
 
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI
 
 
