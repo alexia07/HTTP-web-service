@@ -300,10 +300,13 @@ function post_ressource(req,res){
 
 
 /********************************************
- * Brief :                       *
+ * Brief :    Check tokenvalidity           *
+ *            Proceed to search in the      *
+ *            database and return the       *
+ *            result                        *
  *******************************************/
 
-//curl -i -X GET -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI' "http://localhost:1234/ressources"
+//curl -i -X GET -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk0NzUwNDJ9.vuV3Z5jcGf4tI3Q1qIGo9F9u2Krwtgb8FDvoX-IvPDU' -H 'Content-Type: application/json' -d '{"id": 0}' "http://localhost:1234/ressources"
 
 function get_ressource(req, res){
     
@@ -331,7 +334,7 @@ function get_ressource(req, res){
         client.close();
     
         res.status(200);
-        res.send(`Data found : ${cursor}\n`);
+        res.send(`Data found : ${JSON.stringify(cursor)}\n`);
         return;
     });
 }//End function get_ressource
@@ -355,6 +358,6 @@ app.get('/ressources', (req,res) => get_ressource(req, res));
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
 
 //================TOKEN for Tests=========
-
-
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk0NzUwNDJ9.vuV3Z5jcGf4tI3Q1qIGo9F9u2Krwtgb8FDvoX-IvPDU
+//Until 16.05.2020 18:45
 
