@@ -340,6 +340,22 @@ function get_ressource(req, res){
 }//End function get_ressource
 
 
+/********************************************
+ * Brief :    Check tokenvalidity           *
+ *            Proceed to search in the      *
+ *            database and update the       *
+ *            item found                    *
+ *******************************************/
+
+//curl -i -X PUT -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk0NzUwNDJ9.vuV3Z5jcGf4tI3Q1qIGo9F9u2Krwtgb8FDvoX-IvPDU' -H 'Content-Type: application/json' -d '{"id": 0}' "http://localhost:1234/ressources"
+
+function put_ressource(req,res){
+    
+    res.status(200);
+    res.send("Good job\n");
+    
+}//End function put_ressource
+
 //===============SERVER=============
 
 //Hello Word at /
@@ -353,6 +369,7 @@ app.post('/auth/login', (req,res) => login(req, res));
 
 app.post('/ressources', (req,res) => post_ressource(req, res));
 app.get('/ressources', (req,res) => get_ressource(req, res));
+app.put('/ressources', (req, res) => put_ressource(req, res));
 
 //Console output to confirm app is listening
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
