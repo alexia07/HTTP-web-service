@@ -73,12 +73,14 @@ function create_user(req, res) {
         
             res.status(201);
             res.send(`User "${v_username}" created.\n`);
+            return;
         }
         else 
         {   
             client.close();
             res.status(208);
             res.send(`The user "${v_username}" already exists.\n`);
+            return;
         }
     });
     
@@ -139,6 +141,7 @@ function login(req,res){
         res.status(200);
         token = jwt.sign(userjson, SECRET_KEY);
         res.send(`Token generated\n${token}\n`);
+        return;
     });
 }//End function login
 
