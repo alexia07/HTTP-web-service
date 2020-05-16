@@ -364,11 +364,42 @@ function put_ressource(req,res){
         return;
     }
     
-    require_json = req.body;
+    update_json = req.body;
     
-    res.status(200);
-    res.send("Good job\n");
+    //Search in database the ressource with the corresponding id
+    const urldb = 'mongodb://localhost:27017';
+    const dbName = 'ressourcedb';
+    const client = new MongoClient(urldb);
+
+    client.connect(async function(err) {
+        assert.equal(null, err);
+        console.log("Connected successfully to server");
+        const db = client.db(dbName);
+        const collection = db.collection('ressource');
+        
+        var cursor = await db.collection('ressource').find({"id" :update_json.id}).toArray();
+        
+        //Check if ressource to update exists
+        if (cursor.length < 1)
+        {
+            client.close();
+            res.status(403);
+            res.send(`No existing ressource with the corresponding id "${update_json.id}" found in the database.\n`)
+            return;
+        }
+        
+        var old_ressource = cursor[0]; 
+        
+        var d = new Date();
+        
+        await db.collection('ressource').updateOne({id : update_json.id }, {$set: {modified : d.getTime()/1000}});
+        var cursor2 = await db.collection('ressource').find({"id" :update_json.id}).toArray();
+        client.close();
     
+        res.status(200);
+        res.send(`The ressource \n ${JSON.stringify(old_ressource)}\n has been updated to \n ${JSON.stringify(cursor2[0])} \n`);
+        return;
+    });
 }//End function put_ressource
 
 //===============SERVER=============
