@@ -358,6 +358,12 @@ function get_ressource(req, res){
 
 function put_ressource(req,res){
     
+    if (check_authorization(req,res) == false){
+        return;
+    }
+    
+    require_json = req.body;
+    
     res.status(200);
     res.send("Good job\n");
     
