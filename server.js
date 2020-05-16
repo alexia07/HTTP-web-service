@@ -114,7 +114,7 @@ function login(req,res){
 
     client.connect(async function(err) {
         assert.equal(null, err);
-        //console.log("Connected successfully to server");
+        console.log("Connected successfully to server");
         const db = client.db(dbName);
         const collection = db.collection('users');
         
@@ -290,8 +290,8 @@ function post_ressource(req,res){
         const collection = db.collection('ressource');
         
         var cursor = await db.collection('ressource').find({"id": ressource_json.id}).toArray();
-        //console.log(cursor);
         
+        //If a ressource has the same id, stop procedure
         if (cursor.length > 0)
         {
             client.close();
@@ -327,7 +327,7 @@ function get_ressource(req, res){
     
     require_json = req.body;
     
-    //Write in database
+    //Search in database
     const urldb = 'mongodb://localhost:27017';
     const dbName = 'ressourcedb';
     const client = new MongoClient(urldb);
@@ -339,7 +339,6 @@ function get_ressource(req, res){
         const collection = db.collection('ressource');
         
         var cursor = await db.collection('ressource').find(require_json).toArray();
-        //console.log(cursor);
         
         client.close();
     
@@ -357,7 +356,7 @@ function get_ressource(req, res){
  *            item found                    *
  *******************************************/
 
-//curl -i -X PUT -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk0NzUwNDJ9.vuV3Z5jcGf4tI3Q1qIGo9F9u2Krwtgb8FDvoX-IvPDU' -H 'Content-Type: application/json' -d '{"id": 0}' "http://localhost:1234/ressources"
+//curl -i -X PUT -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk0NzUwNDJ9.vuV3Z5jcGf4tI3Q1qIGo9F9u2Krwtgb8FDvoX-IvPDU' -H 'Content-Type: application/json' -d '{"id": 0, "data" : {"msg" : "Hello World", "author" : "me"}}' "http://localhost:1234/ressources"
 
 function put_ressource(req,res){
     
