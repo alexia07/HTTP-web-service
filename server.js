@@ -315,7 +315,6 @@ function get_ressource(req, res){
     }
     
     require_json = req.body;
-    console.log(require_json);
     
     //Write in database
     const urldb = 'mongodb://localhost:27017';
