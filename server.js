@@ -286,8 +286,16 @@ function post_ressource(req,res){
         const db = client.db(dbName);
         const collection = db.collection('ressource');
         
-        //var cursor = await db.collection('ressource').find({}).toArray();
+        var cursor = await db.collection('ressource').find({"id": ressource_json.id}).toArray();
         //console.log(cursor);
+        
+        if (cursor.length > 0)
+        {
+            client.close();
+            res.status(403);
+            res.send(`A ressource with the id "${ressource_json.id}" already exists. No new ressource has been created.\n`);
+            return;
+        }
         
         db.collection('ressource').insertOne(ressource_json);
         client.close();
