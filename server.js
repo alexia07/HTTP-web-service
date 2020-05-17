@@ -366,6 +366,11 @@ function put_ressource(req,res){
     
     update_json = req.body;
     
+    if (!update_json.hasOwnProperty('data')){
+        res.status(403);
+        res.send('In order to update a ressource, please send a JSON with a data field.\n');
+    }
+    
     //Search in database the ressource with the corresponding id
     const urldb = 'mongodb://localhost:27017';
     const dbName = 'ressourcedb';
