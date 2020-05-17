@@ -398,6 +398,13 @@ function put_ressource(req,res){
         var d = new Date();
         
         await db.collection('ressource').updateOne({id : update_json.id }, {$set: {modified : d.getTime()/1000}});
+        
+        await Object.entries(update_json.data).forEach(async ([key, value]) => {
+            var obj = {data : old_ressource.data};
+            obj.data[key]=value;
+            await db.collection('ressource').updateOne({id : update_json.id }, {$set : obj});
+        });
+        
         var cursor2 = await db.collection('ressource').find({"id" :update_json.id}).toArray();
         client.close();
     
