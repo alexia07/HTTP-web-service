@@ -356,7 +356,7 @@ function get_ressource(req, res){
  *            item found                    *
  *******************************************/
 
-//curl -i -X PUT -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk0NzUwNDJ9.vuV3Z5jcGf4tI3Q1qIGo9F9u2Krwtgb8FDvoX-IvPDU' -H 'Content-Type: application/json' -d '{"id": 0, "data" : {"msg" : "Hello World", "author" : "me"}}' "http://localhost:1234/ressources"
+//curl -i -X PUT -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk3MjI0Mjl9.aXTFOTnY2wHyvNftTExb65n07uk_pJ1o5CnB_C07rXA' -H 'Content-Type: application/json' -d '{"id": 0, "data" : {"msg" : "Hello World", "author" : "me"}}' "http://localhost:1234/ressources"
 
 function put_ressource(req,res){
     
@@ -384,7 +384,7 @@ function put_ressource(req,res){
         {
             client.close();
             res.status(403);
-            res.send(`No existing ressource with the corresponding id "${update_json.id}" found in the database.\n`)
+            res.send(`No existing ressource with the corresponding id "${update_json.id}" found in the database.\n`);
             return;
         }
         
@@ -421,6 +421,6 @@ app.put('/ressources', (req, res) => put_ressource(req, res));
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
 
 //================TOKEN for Tests=========
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk0NzUwNDJ9.vuV3Z5jcGf4tI3Q1qIGo9F9u2Krwtgb8FDvoX-IvPDU
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk3MjI0Mjl9.aXTFOTnY2wHyvNftTExb65n07uk_pJ1o5CnB_C07rXA
 //Until 16.05.2020 18:45
 
