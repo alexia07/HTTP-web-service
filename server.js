@@ -366,9 +366,10 @@ function put_ressource(req,res){
     
     update_json = req.body;
     
-    if (!update_json.hasOwnProperty('data')){
+    if (!update_json.hasOwnProperty('data') || (!update_json.hasOwnProperty('id'))){
         res.status(403);
-        res.send('In order to update a ressource, please send a JSON with a data field.\n');
+        res.send('In order to update a ressource, please send a JSON with an id field and a data field.\n');
+        return;
     }
     
     //Search in database the ressource with the corresponding id
