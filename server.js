@@ -1,6 +1,6 @@
 /********************************************************************
- * Name : app.js                                                    *
- * Description : Pryv Software engineer codding exercise 2          *
+ * Name : server.js                                                 *
+ * Description : Pryv Software engineer codding exercise 3          *
  * Creation date : 30.04.2020                                       *
  * Author : Alexia Vernier, contact@alexiavernier.com               *
  *                                                                  *
@@ -11,17 +11,17 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var url = require('url');
-var request = require('request');
-const superagent = require('superagent');
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 var jwt = require('jsonwebtoken');
 var cuid = require('cuid');
 
+
 //==============GLOBAL VARIABLES==============
 var app = express();
 const port = 1234 ; //Define listening port
 const SECRET_KEY = "JWT_SECRET";
+
 
 //=============USES============
 app.use(express.json());
@@ -473,7 +473,7 @@ function delete_ressource(req,res){
 //===============SERVER=============
 
 //Hello Word at /
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/', (req, res) => res.send('Hello World!\n'));
 
 //Retrieve creditentials and send event at /data
 app.post('/users', (req, res) => create_user(req, res));
