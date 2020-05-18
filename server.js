@@ -415,6 +415,61 @@ function put_ressource(req,res){
     });
 }//End function put_ressource
 
+/********************************************
+ * Brief :    Check token validity          *
+ *            Proceed to search in the      *
+ *            database and delete the       *
+ *            item found                    *
+ *******************************************/
+
+//curl -i -X DELETE -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk3MjI0Mjl9.aXTFOTnY2wHyvNftTExb65n07uk_pJ1o5CnB_C07rXA' -H 'Content-Type: application/json' -d '{"id": 0}' "http://localhost:1234/ressources"
+
+function delete_ressource(req,res){
+    
+    if (check_authorization(req,res) == false){
+        return;
+    }
+    
+    delete_json = req.body;
+    
+    if (!delete_json.hasOwnProperty('id')){
+        res.status(403);
+        res.send('In order to update a ressource, please send a JSON with an id field.\n');
+        return;
+    }
+    
+    //Search in database the ressource with the corresponding id
+    const urldb = 'mongodb://localhost:27017';
+    const dbName = 'ressourcedb';
+    const client = new MongoClient(urldb);
+
+    client.connect(async function(err) {
+        assert.equal(null, err);
+        console.log("Connected successfully to server");
+        const db = client.db(dbName);
+        const collection = db.collection('ressource');
+        
+        var cursor = await db.collection('ressource').find({"id" :delete_json.id}).toArray();
+        
+        //Check if ressource to update exists
+        if (cursor.length < 1)
+        {
+            client.close();
+            res.status(403);
+            res.send(`No existing ressource with the corresponding id "${delete_json.id}" found in the database.\n`);
+            return;
+        }
+        
+        
+        
+        client.close();
+        res.status(200);
+        res.send(`Good job\n`)
+        
+    });
+    
+}//End function delete_ressource
+
 //===============SERVER=============
 
 //Hello Word at /
@@ -429,6 +484,7 @@ app.post('/auth/login', (req,res) => login(req, res));
 app.post('/ressources', (req,res) => post_ressource(req, res));
 app.get('/ressources', (req,res) => get_ressource(req, res));
 app.put('/ressources', (req, res) => put_ressource(req, res));
+app.delete('/ressources' , (req, res ) => delete_ressource(req, res));
 
 //Console output to confirm app is listening
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
