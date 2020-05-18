@@ -11,15 +11,14 @@
 const request = require('supertest');
 const express = require('express');
 const chai = require('chai');
+var cuid = require('cuid');
  
 //=======GLOBAL VARIABLES=======
 const app = express();
-
 var expect = chai.expect;
+var username = cuid();
 
 //=======TESTS=======
-  res.status(200).json({ name: 'john' });
-});
 
 //---Hello World---
 describe('GET server /', function() {
@@ -29,4 +28,17 @@ describe('GET server /', function() {
       .expect(200, done)
   });
 });
+
+//---Users---
+describe('POST server /users', function() {
+    it('responds with new user created', function (done) {
+        request('http://localhost:1234')
+        .post('/users')
+        .send({"username" : username, "password" : username})
+        .expect(201,`User "${username}" created.\n`, done)
+    });
+});
+
+
+
 
