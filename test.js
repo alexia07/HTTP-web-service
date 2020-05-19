@@ -39,6 +39,51 @@ describe('POST server /users', function() {
     });
 });
 
+describe('POST server /users with same username than previously', function() {
+    it('responds with user already exists', function (done) {
+        request('http://localhost:1234')
+        .post('/users')
+        .send({"username" : username, "password" : username})
+        .expect(208,`The user "${username}" already exists.\n`, done)
+    });
+});
+
+describe('POST server /users without any JSON', function() {
+    it('Sends an error asking for the required fields', function (done) {
+        request('http://localhost:1234')
+        .post('/users')
+        .expect(400,'Expect fields "username" and "password"\n', done)
+    });
+});
+
+describe('POST server /users lacking username', function() {
+    it('Sends an error asking for the required fields', function (done) {
+        request('http://localhost:1234')
+        .post('/users')
+        .send({"password" : username})
+        .expect(400,'Expect fields "username" and "password"\n', done)
+    });
+});
+
+describe('POST server /users lacking passwrod', function() {
+    it('Sends an error asking for the required fields', function (done) {
+        request('http://localhost:1234')
+        .post('/users')
+        .send({"username" : username})
+        .expect(400,'Expect fields "username" and "password"\n', done)
+    });
+});
+
+//---Login---
+describe('POST server /auth/login', function() {
+    it('Responds with token', function (done) {
+        request('http://localhost:1234')
+        .post('/auth/login')
+        .send({"username" : username, "password" : username})
+        .expect(200, done)
+    });
+});
+
 
 
 
