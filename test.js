@@ -25,7 +25,7 @@ describe('GET server /', function() {
   it('Responds with "Hello World!"', function(done) {
     request('http://localhost:1234')
       .get('/')
-      .expect(200, done)
+      .expect(200,"Hello World!\n", done)
   });
 });
 
