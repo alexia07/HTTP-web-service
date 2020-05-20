@@ -86,6 +86,51 @@ describe('POST server /auth/login', function() {
     });
 });
 
+describe('POST server /auth/login without any JSON', function() {
+    it('Sends an error 400 asking for the required fields', function (done) {
+        request('http://localhost:1234')
+        .post('/auth/login')
+        .expect(400,'Expect fields "username" and "password"\n', done)
+    });
+});
+
+describe('POST server /auth/login lacking username', function() {
+    it('Sends an error 400 asking for the required fields', function (done) {
+        request('http://localhost:1234')
+        .post('/auth/login')
+        .send({"password" : username})
+        .expect(400,'Expect fields "username" and "password"\n', done)
+    });
+});
+
+describe('POST server /auth/login lacking password', function() {
+    it('Sends an error 400 asking for the required fields', function (done) {
+        request('http://localhost:1234')
+        .post('/auth/login')
+        .send({"username" : username})
+        .expect(400,'Expect fields "username" and "password"\n', done)
+    });
+});
+
+describe('POST server /auth/login with unknown username', function() {
+    it('Sends an error 403 claiming the user is unknown', function (done) {
+        request('http://localhost:1234')
+        .post('/auth/login')
+        .send({"username" : "xyz", "password" : username})
+        .expect(403,`User "xyz" does not exist.\n`, done)
+    });
+});
+
+describe('POST server /auth/login with wrong password', function() {
+    it('Sends an error 403 claiming the password is wrong', function (done) {
+        request('http://localhost:1234')
+        .post('/auth/login')
+        .send({"username" : username, "password" : "xyz"})
+        .expect(403,'Authentification failed, wrong password\n', done)
+    });
+});
+
+
 
 
 
