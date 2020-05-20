@@ -22,12 +22,13 @@ var username = cuid();
 
 //---Hello World---
 describe('GET server /', function() {
-  it('responds with "Hello World!"', function(done) {
+  it('Responds with "Hello World!"', function(done) {
     request('http://localhost:1234')
       .get('/')
       .expect(200, done)
   });
 });
+
 
 //---Users---
 describe('POST server /users', function() {
@@ -40,7 +41,7 @@ describe('POST server /users', function() {
 });
 
 describe('POST server /users with same username than previously', function() {
-    it('responds with user already exists', function (done) {
+    it('Sends status 208 and responds with user already exists', function (done) {
         request('http://localhost:1234')
         .post('/users')
         .send({"username" : username, "password" : username})
@@ -49,7 +50,7 @@ describe('POST server /users with same username than previously', function() {
 });
 
 describe('POST server /users without any JSON', function() {
-    it('Sends an error asking for the required fields', function (done) {
+    it('Sends an error 400 asking for the required fields', function (done) {
         request('http://localhost:1234')
         .post('/users')
         .expect(400,'Expect fields "username" and "password"\n', done)
@@ -57,7 +58,7 @@ describe('POST server /users without any JSON', function() {
 });
 
 describe('POST server /users lacking username', function() {
-    it('Sends an error asking for the required fields', function (done) {
+    it('Sends an error 400 asking for the required fields', function (done) {
         request('http://localhost:1234')
         .post('/users')
         .send({"password" : username})
@@ -66,13 +67,14 @@ describe('POST server /users lacking username', function() {
 });
 
 describe('POST server /users lacking passwrod', function() {
-    it('Sends an error asking for the required fields', function (done) {
+    it('Sends an error 400 asking for the required fields', function (done) {
         request('http://localhost:1234')
         .post('/users')
         .send({"username" : username})
         .expect(400,'Expect fields "username" and "password"\n', done)
     });
 });
+
 
 //---Login---
 describe('POST server /auth/login', function() {
