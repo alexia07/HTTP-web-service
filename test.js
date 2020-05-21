@@ -17,6 +17,8 @@ var cuid = require('cuid');
 const app = express();
 var expect = chai.expect;
 var username = cuid();
+var tocken;
+var ressource_json;
 
 //=======TESTS=======
 
@@ -140,4 +142,118 @@ describe('POST server /auth/login with wrong password', function() {
 
 
 
+//---Post Ressource---
+describe('POST server /ressource with correct authorization and correct ressource', function() {
+    it('Create a ressource in the database', function (done) {
+        request('http://localhost:1234')
+        .post('/ressources')
+        .set('Authorization', `Bearer ${token}`)
+        .send({"id" : username, "data":{}})
+        .end((err) => {
+            ressource_json = {"id" : username, "data":{}};
+            expect(201,`Data "${ressource_json.id}" created.\n`);
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
+
+describe('POST server /ressource with correct authorization and ressource with same id than previously', function() {
+    it('Raise error claiming a ressource with the same id already exists', function (done) {
+        request('http://localhost:1234')
+        .post('/ressources')
+        .set('Authorization', `Bearer ${token}`)
+        .send(ressource_json)
+        .end((err) => {
+            expect(403,`A ressource with the id "${ressource_json.id}" already exists. No new ressource has been created.\n`);
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
+
+describe('POST server /ressource with correct authorization and ressource without id', function() {
+    it('Generate id and create a ressource in the database', function (done) {
+        request('http://localhost:1234')
+        .post('/ressources')
+        .set('Authorization', `Bearer ${token}`)
+        .send({"data":{}})
+        .end((err) => {
+            expect(201);
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
+
+describe('POST server /ressource without data field', function() {
+    it('Raise error claiming that a ressource requires a data field', function (done) {
+        request('http://localhost:1234')
+        .post('/ressources')
+        .set('Authorization', `Bearer ${token}`)
+        .send({"not_data" : {}})
+        .end((err) => {
+            expect(415,'The request should contain an object "data"\n');
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
+
+describe('POST server /ressource with more than 10 fields in data ', function() {
+    it('Raise error claiming that data requires 10 fields at most', function (done) {
+        request('http://localhost:1234')
+        .post('/ressources')
+        .set('Authorization', `Bearer ${token}`)
+        .send({"data" : {"1" : "a", "2" : "a", "3" : "a", "4" : "a", "5" : "a", "6" : "a", "7" : "a", "8" : "a", "9" : "a", "10" : "a", "11" : "a"}})
+        .end((err) => {
+            expect(413,'Data object must contain at most 10 fields\n');
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
+
+describe('POST server /ressource with float in data', function() {
+    it('Raise error claiming that values in data must be string or integers', function (done) {
+        request('http://localhost:1234')
+        .post('/ressources')
+        .set('Authorization', `Bearer ${token}`)
+        .send({"data" : {"1" : 2.5}})
+        .end((err) => {
+            expect(413,`The values must be string or integers, the value associated to the key "1" is not appropriate.\n`);
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
+
+
+describe('POST server /ressource with a really long string in data', function() {
+    it('Raise error claiming that the maximum length is 512 for values in data', function (done) {
+        request('http://localhost:1234')
+        .post('/ressources')
+        .set('Authorization', `Bearer ${token}`)
+        .send({"data" : {"1" : "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"}})
+        .end((err) => {
+            expect(413,`The values associated to the key "1" is too long. The maximum length is 512.\n`);
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
 
