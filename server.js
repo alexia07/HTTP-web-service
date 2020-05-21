@@ -15,12 +15,14 @@ const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 var jwt = require('jsonwebtoken');
 var cuid = require('cuid');
+const bcrypt = require('bcrypt')
 
 
 //==============GLOBAL VARIABLES==============
 var app = express();
 const port = 1234 ; //Define listening port
 const SECRET_KEY = "JWT_SECRET";
+var salt =10 //any random value for password encrypting
 
 
 //=============USES============
@@ -49,6 +51,10 @@ function create_user(req, res) {
     }
     
     var v_username = userjson.username;
+    
+    bcrypt.hash(req.body.password, salt, (err, encrypted) => {
+        userjson.password = encrypted
+    });
     var v_password = userjson.password;
     
     const urldb = 'mongodb://localhost:27017';
@@ -96,7 +102,7 @@ function create_user(req, res) {
 
 //Test curl : curl -i -X POST -H 'Content-Type: application/json' -d '{"username":"a", "password":"a"}' "http://localhost:1234/auth/login" 
 
-function login(req,res){
+async function login(req,res){
     var userjson = req.body;
     
     if (!("username" in userjson) || !("password" in userjson)) {
@@ -127,14 +133,22 @@ function login(req,res){
             return
         }
         
-        cursor = await db.collection('users').find({username: v_username, password: v_password}).toArray();
+        var is_password_OK;
         
-        if (cursor.length < 1)
+        await bcrypt.compare(userjson.password, cursor[0].password, function (err, result) {
+            if (result == true) {
+                is_password_OK = true;
+            } else {
+                is_password_OK = false;
+            }
+        });
+        
+        if (!is_password_OK)
         {
             client.close();
             res.status(403);
             res.send('Authentification failed, wrong password\n');
-            return
+            return;
         }
         
         client.close();
