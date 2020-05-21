@@ -289,3 +289,73 @@ describe('POST server /ressource with a really long string in data', function() 
     });
 });
 
+
+//---Get Ressource---
+describe('GET server /ressource with correct authorization', function() {
+    it('Sends status 200 and display the ressources found', function (done) {
+        request('http://localhost:1234')
+        .get('/ressources')
+        .set('Authorization', `Bearer ${token}`)
+        .send({"id" : ressource_json.id})
+        .end((err) => {
+            expect(200);
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
+
+describe('GET server /ressource with correct authorization requiring an unknown id', function() {
+    it('Raise an error 404 claiming no ressource corresponding to the id has been found', function (done) {
+        request('http://localhost:1234')
+        .get('/ressources')
+        .set('Authorization', `Bearer ${token}`)
+        .send({"id" : "zzz"})
+        .end((err) => {
+            expect(404, `No ressource with the id "zzz" has been found.\n`);
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
+
+
+//---Put ressource---
+describe('PUT server /ressource with correct authorization', function() {
+    it('Sends status 200 and display the modifications', function (done) {
+        request('http://localhost:1234')
+        .get('/ressources')
+        .set('Authorization', `Bearer ${token}`)
+        .send({"id" : ressource_json.id, "data" : {"msg" : "Hello there"}})
+        .end((err) => {
+            expect(200);
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
+
+
+describe('PUT server /ressource with correct authorization, update non existing ressource', function() {
+    it('Raise an error 404 caliming no ressources has the corresponding id', function (done) {
+        request('http://localhost:1234')
+        .get('/ressources')
+        .set('Authorization', `Bearer ${token}`)
+        .send({"id" : "zzz", "data" : {"msg" : "Hello there"}})
+        .end((err) => {
+            expect(404, `No existing ressource with the corresponding id "zzz" found in the database.\n`);
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
+
+
