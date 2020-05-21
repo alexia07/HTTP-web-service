@@ -24,7 +24,7 @@ var ressource_json;
 
 //---Hello World---
 describe('GET server /', function() {
-  it('Responds with "Hello World!"', function(done) {
+  it('Sends status 200 and responds with "Hello World!"', function(done) {
     request('http://localhost:1234')
       .get('/')
       .expect(200,"Hello World!\n", done)
@@ -34,7 +34,7 @@ describe('GET server /', function() {
 
 //---Users---
 describe('POST server /users', function() {
-    it('responds with new user created', function (done) {
+    it('Sends status 201 and responds with new user created', function (done) {
         request('http://localhost:1234')
         .post('/users')
         .send({"username" : username, "password" : username})
@@ -80,7 +80,7 @@ describe('POST server /users lacking passwrod', function() {
 
 //---Login---
 describe('POST server /auth/login', function(res) {
-    it('Responds with token', function (done) {
+    it('Sends status 200 and responds with token', function (done) {
         request('http://localhost:1234')
         .post('/auth/login')
         .send({"username" : username, "password" : username})
@@ -144,7 +144,7 @@ describe('POST server /auth/login with wrong password', function() {
 
 //---Post Ressource---
 describe('POST server /ressource with correct authorization and correct ressource', function() {
-    it('Create a ressource in the database', function (done) {
+    it('Sends status 201 and create a ressource in the database', function (done) {
         request('http://localhost:1234')
         .post('/ressources')
         .set('Authorization', `Bearer ${token}`)
@@ -161,7 +161,7 @@ describe('POST server /ressource with correct authorization and correct ressourc
 });
 
 describe('POST server /ressource with correct authorization and ressource with same id than previously', function() {
-    it('Raise error claiming a ressource with the same id already exists', function (done) {
+    it('Raise an error 403 claiming a ressource with the same id already exists', function (done) {
         request('http://localhost:1234')
         .post('/ressources')
         .set('Authorization', `Bearer ${token}`)
@@ -177,7 +177,7 @@ describe('POST server /ressource with correct authorization and ressource with s
 });
 
 describe('POST server /ressource with correct authorization and ressource without id', function() {
-    it('Generate id and create a ressource in the database', function (done) {
+    it('Sends status 201, generate id and create a ressource in the database', function (done) {
         request('http://localhost:1234')
         .post('/ressources')
         .set('Authorization', `Bearer ${token}`)
@@ -193,7 +193,7 @@ describe('POST server /ressource with correct authorization and ressource withou
 });
 
 describe('POST server /ressource without data field', function() {
-    it('Raise error claiming that a ressource requires a data field', function (done) {
+    it('Raise an error 415 claiming that a ressource requires a data field', function (done) {
         request('http://localhost:1234')
         .post('/ressources')
         .set('Authorization', `Bearer ${token}`)
@@ -209,7 +209,7 @@ describe('POST server /ressource without data field', function() {
 });
 
 describe('POST server /ressource with more than 10 fields in data ', function() {
-    it('Raise error claiming that data requires 10 fields at most', function (done) {
+    it('Raise an error 413 claiming that data requires 10 fields at most', function (done) {
         request('http://localhost:1234')
         .post('/ressources')
         .set('Authorization', `Bearer ${token}`)
@@ -225,7 +225,7 @@ describe('POST server /ressource with more than 10 fields in data ', function() 
 });
 
 describe('POST server /ressource with float in data', function() {
-    it('Raise error claiming that values in data must be string or integers', function (done) {
+    it('Raise an error 413 claiming that values in data must be string or integers', function (done) {
         request('http://localhost:1234')
         .post('/ressources')
         .set('Authorization', `Bearer ${token}`)
@@ -242,7 +242,7 @@ describe('POST server /ressource with float in data', function() {
 
 
 describe('POST server /ressource with a really long string in data', function() {
-    it('Raise error claiming that the maximum length is 512 for values in data', function (done) {
+    it('Raise an error 413 claiming that the maximum length is 512 for values in data', function (done) {
         request('http://localhost:1234')
         .post('/ressources')
         .set('Authorization', `Bearer ${token}`)
