@@ -467,12 +467,14 @@ function delete_ressource(req,res){
             res.send(`No existing ressource with the corresponding id "${delete_json.id}" found in the database.\n`);
             return;
         }
+        var d = new Date();
         
-        
+        await db.collection('ressource').updateOne({id : delete_json.id }, {$set: {deleted : d.getTime()/1000}});
+        await db.collection('ressource').updateOne({id : delete_json.id }, { $unset: {data : "" }});
         
         client.close();
         res.status(200);
-        res.send(`Good job\n`)
+        res.send(`The ressource with id "${delete_json.id}" has been deleted\n`);
         
     });
     
