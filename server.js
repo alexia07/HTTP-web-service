@@ -63,7 +63,7 @@ function create_user(req, res) {
 
     client.connect(async function(err) {
         assert.equal(null, err);
-        //console.log("Connected successfully to server");
+        console.log("Connected successfully to server");
         const db = client.db(dbName);
         const collection = db.collection('users');
         
@@ -166,10 +166,7 @@ async function login(req,res){
  *          check for its validity      *
  ***************************************/
 
-//Token example : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODg2MDg4MDF9.olYZxe7SXto-cKNno38lzXrqXOR9Jtalkd3U7mv2xIc
-//  To test after 6.05 18h40
 //Test curl : curl -i -X POST -H 'Content-Type: application/json' -d '{"token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODg2MDg4MDF9.olYZxe7SXto-cKNno38lzXrqXOR9Jtalkd3U7mv2xIc"}' "http://localhost:1234/ressources"
-//Result : "Token outdated, please generate a new one at /users"
 
 function check_token(jwtToken, res){
     
@@ -230,9 +227,6 @@ function check_authorization(req,res){
 //curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI' -H 'Content-Type: application/json' -d '{"msg" : "Good job", "author" : "me"}' "http://localhost:1234/ressources"
 
 //curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk0NzUwNDJ9.vuV3Z5jcGf4tI3Q1qIGo9F9u2Krwtgb8FDvoX-IvPDU' -H 'Content-Type: application/json' -d '{"id" : 0, "data" : {"msg" : "Good job", "author" : "me"}}' "http://localhost:1234/ressources"
-
-//id : cka2qjk0j00006kpt2p1jf3tb
-
 
 function post_ressource(req,res){
     
