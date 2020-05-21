@@ -340,6 +340,14 @@ function get_ressource(req, res){
         
         var cursor = await db.collection('ressource').find(require_json).toArray();
         
+        if (cursor.length = 0)
+        {
+            client.close();
+            res.status(404);
+            res.send(`No ressource with the id "${require_json.id}" has been found.\n`);
+            return;
+        }
+        
         client.close();
     
         res.status(200);
