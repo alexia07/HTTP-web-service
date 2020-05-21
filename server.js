@@ -397,7 +397,7 @@ function put_ressource(req,res){
         if (cursor.length < 1)
         {
             client.close();
-            res.status(403);
+            res.status(404);
             res.send(`No existing ressource with the corresponding id "${update_json.id}" found in the database.\n`);
             return;
         }
