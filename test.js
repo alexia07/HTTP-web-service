@@ -140,6 +140,38 @@ describe('POST server /auth/login with wrong password', function() {
 });
 
 
+//---Authorization header error handling---
+describe('POST server /ressource with incorrect authorization', function() {
+    it('Raise an error 403 claiming the token is invalid', function (done) {
+        request('http://localhost:1234')
+        .post('/ressources')
+        .set('Authorization', `Bearer 1234`)
+        .send(ressource_json)
+        .end((err) => {
+            expect(403,`Invalid authentification token: 1234`);
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
+
+describe('POST server /ressource without authorization', function() {
+    it('Raise an error 401 claiming a Bearer authorization is required', function (done) {
+        request('http://localhost:1234')
+        .post('/ressources')
+        .set('Authorization', `Bearer 1234`)
+        .send(ressource_json)
+        .end((err) => {
+            expect(401,'Missing token Bearer authorization header\n');
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
 
 
 //---Post Ressource---
