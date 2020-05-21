@@ -325,7 +325,7 @@ function post_ressource(req,res){
  *            result                        *
  *******************************************/
 
-//curl -i -X GET -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk0NzUwNDJ9.vuV3Z5jcGf4tI3Q1qIGo9F9u2Krwtgb8FDvoX-IvPDU' -H 'Content-Type: application/json' -d '{"id": 0}' "http://localhost:1234/ressources"
+//curl -i -X GET -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1OTAwNTMyNzB9.2-h7fMMVs6N6IoRC-Q33O6ApizA-JbU6_3jSocxkYbw' -H 'Content-Type: application/json' -d '{"id": 0}' "http://localhost:1234/ressources"
 
 function get_ressource(req, res){
     
