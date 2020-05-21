@@ -192,7 +192,7 @@ function check_authorization(req,res){
     
     if (!req.headers.authorization || req.headers.authorization.indexOf('Bearer ') === -1) {
         res.status(401);
-        res.send('Missing token authorization header\n');
+        res.send('Missing token Bearer authorization header\n');
         return false;
     }
     
