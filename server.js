@@ -348,7 +348,7 @@ function get_ressource(req, res){
         
         var cursor = await db.collection('ressource').find(require_json).toArray();
         
-        if (cursor.length = 0)
+        if (cursor.length < 1)
         {
             client.close();
             res.status(404);
