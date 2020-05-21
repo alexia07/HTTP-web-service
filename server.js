@@ -430,7 +430,7 @@ function put_ressource(req,res){
  *            item found                    *
  *******************************************/
 
-//curl -i -X DELETE -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk3MjI0Mjl9.aXTFOTnY2wHyvNftTExb65n07uk_pJ1o5CnB_C07rXA' -H 'Content-Type: application/json' -d '{"id": 0}' "http://localhost:1234/ressources"
+//curl -i -X DELETE -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1OTAwNTMyNzB9.2-h7fMMVs6N6IoRC-Q33O6ApizA-JbU6_3jSocxkYbw' -H 'Content-Type: application/json' -d '{"id": 1}' "http://localhost:1234/ressources"
 
 function delete_ressource(req,res){
     
@@ -498,6 +498,6 @@ app.delete('/ressources' , (req, res ) => delete_ressource(req, res));
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
 
 //================TOKEN for Tests=========
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk3MjI0Mjl9.aXTFOTnY2wHyvNftTExb65n07uk_pJ1o5CnB_C07rXA
-//Until 18.05.2020 18:45
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1OTAwNTMyNzB9.2-h7fMMVs6N6IoRC-Q33O6ApizA-JbU6_3jSocxkYbw
+//Until 23.05.2020 11:25
 
