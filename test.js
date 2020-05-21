@@ -77,12 +77,19 @@ describe('POST server /users lacking passwrod', function() {
 
 
 //---Login---
-describe('POST server /auth/login', function() {
+describe('POST server /auth/login', function(res) {
     it('Responds with token', function (done) {
         request('http://localhost:1234')
         .post('/auth/login')
         .send({"username" : username, "password" : username})
-        .expect(200, done)
+        .end(function(err, res){
+            token = res.body;
+            expect(200,`Token generated\n${token}\n` );
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
     });
 });
 
