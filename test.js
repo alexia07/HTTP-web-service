@@ -359,3 +359,36 @@ describe('PUT server /ressource with correct authorization, update non existing 
 });
 
 
+//---Delete ressource---
+describe('DELETE server /ressource with correct authorization', function() {
+    it('Sends status 200 and display a delete message', function (done) {
+        request('http://localhost:1234')
+        .get('/ressources')
+        .set('Authorization', `Bearer ${token}`)
+        .send({"id" : ressource_json.id})
+        .end((err) => {
+            expect(200, `The ressource with id "${ressource_json.id}" has been deleted\n`);
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
+
+
+describe('DELETE server /ressource with correct authorization, ressource id not in data base', function() {
+    it('Raise an error 404 claiming the ressource has not been found', function (done) {
+        request('http://localhost:1234')
+        .get('/ressources')
+        .set('Authorization', `Bearer ${token}`)
+        .send({"id" : "zzz"})
+        .end((err) => {
+            expect(404, `No existing ressource with the corresponding id "zzz" found in the database.\n`);
+            if (err) {
+            return done(err);
+            }
+            done();
+        })
+    });
+});
