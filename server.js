@@ -142,6 +142,7 @@ async function login(req,res){
 
         if (cursor.length < 1)
         {
+            client.close();
             res.status(403);
             res.send(`User "${v_username}" does not exist.\n`);
             return
