@@ -20,7 +20,7 @@ const bcrypt = require('bcrypt')
 
 //==============GLOBAL VARIABLES==============
 var app = express();
-const port = 1234 ; //Define listening port
+const port = 1234 ;
 const SECRET_KEY = "JWT_SECRET";
 var salt =10 //any random value for password encrypting
 
@@ -32,13 +32,20 @@ app.use(express.json());
 //=============FUNCTIONS===============
 
 /****************************************
- * Brief :  expect input with field     *
- *          username and password       *
- *          create user in the db       *
+ * @brief : creates user in the db      *
  *          if user is not created yet  *
+ *                                      *
+ * @param :                             *
+ *      - req : request, body should be *
+ *              JSON type, composed of  *
+ *              "username"and "password"*
+ *              fields                  *
+ *      - res : response, send status   *
+ *              and messages            *
  ***************************************/
 
-//Test curl : curl -i -X POST -H 'Content-Type: application/json' -d '{"username":"a", "password":"a"}' "http://localhost:1234/users" 
+//Test with curl
+//curl -i -X POST -H 'Content-Type: application/json' -d '{"username":"a", "password":"a"}' "http://localhost:1234/users" 
 
 function create_user(req, res) {
     
@@ -95,12 +102,19 @@ function create_user(req, res) {
 
 
 /****************************************
- * Brief :  expect input with field     *
- *          username and password       *
- *          send token valid for 48h    *
+ * @brief : sends token valid for 48h   *
+ *                                      *
+ * @param :                             *
+ *      - req : request, body should be *
+ *              JSON type, composed of  *
+ *              "username" and          *
+ *              "password" fields       *
+ *      - res : response, send status   *
+ *              and token               *
  ***************************************/
 
-//Test curl : curl -i -X POST -H 'Content-Type: application/json' -d '{"username":"a", "password":"a"}' "http://localhost:1234/auth/login" 
+//Test with curl
+//curl -i -X POST -H 'Content-Type: application/json' -d '{"username":"a", "password":"a"}' "http://localhost:1234/auth/login" 
 
 async function login(req,res){
     var userjson = req.body;
@@ -162,11 +176,19 @@ async function login(req,res){
 
 
 /****************************************
- * Brief :  check if token is OK        *
- *          check for its validity      *
+ * @brief : checks token validity       *
+ *                                      *
+ * @param :                             *
+ *      - jwtToken : token to check     *
+ *      - res : response, sends status  *
+ *              and messages            *
+ *                                      *
+ * @return : bool - false if invalid    *
+ *                - true if valid       *
  ***************************************/
 
-//Test curl : curl -i -X POST -H 'Content-Type: application/json' -d '{"token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODg2MDg4MDF9.olYZxe7SXto-cKNno38lzXrqXOR9Jtalkd3U7mv2xIc"}' "http://localhost:1234/ressources"
+//Test curl
+//curl -i -X POST -H 'Content-Type: application/json' -d '{"token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODg2MDg4MDF9.olYZxe7SXto-cKNno38lzXrqXOR9Jtalkd3U7mv2xIc"}' "http://localhost:1234/ressources"
 
 function check_token(jwtToken, res){
     
@@ -193,10 +215,22 @@ function check_token(jwtToken, res){
 
 
 /********************************************
- * Brief :  check if authorization header   *
- *          check for its validity          *
+ * @brief : checks for validity of          *
+ *          authorization header            *
+ *                                          *
+ * @param :                                 *
+ *      - req : request, header should      *
+ *              contain a Bearer            *
+ *              authorization with a valid  *
+ *              token                       *
+ *      - res : response, sends status and  *
+ *              messages                    *
+ *                                          *
+ * @return : bool - false if invalid        *
+ *                - true if valid           *
  *******************************************/
 
+//Test with curl
 //curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI' "http://localhost:1234/ressources"
 
 function check_authorization(req,res){
@@ -218,12 +252,23 @@ function check_authorization(req,res){
 }//End function check_authorization
 
 /********************************************
- * Brief :  Run necessary checks, create    *
+ * @brief : Runs necessary checks, create   *
  *          the ressource with the required *
  *          properties and store it in the  * 
  *          data base                       *
+ *                                          *
+ * @param :                                 *
+ *      - req : request, body should be a   *
+ *              JSON containing a "data"    *
+ *              field with inside not more  *
+ *              than 10 fields with sting   *
+ *              or int value of max length  *
+ *              512                         *
+ *      - res : response, sends status and  *
+ *              messages                    *
  *******************************************/
 
+//Tests with curl
 //curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODkwNDUwMTN9.CTqw6GE3ji4Yxg11jzMRrzk6ewg5XQ51Zisy-hiN6rI' -H 'Content-Type: application/json' -d '{"msg" : "Good job", "author" : "me"}' "http://localhost:1234/ressources"
 
 //curl -i -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk0NzUwNDJ9.vuV3Z5jcGf4tI3Q1qIGo9F9u2Krwtgb8FDvoX-IvPDU' -H 'Content-Type: application/json' -d '{"id" : 0, "data" : {"msg" : "Good job", "author" : "me"}}' "http://localhost:1234/ressources"
@@ -319,12 +364,21 @@ function post_ressource(req,res){
 
 
 /********************************************
- * Brief :    Check tokenvalidity           *
- *            Proceed to search in the      *
+ * @brief :   Proceeds to search in the     *
  *            database and return the       *
- *            result                        *
+ *            result ressource with the     *
+ *            desired id                    *
+ *                                          *
+ * @param :                                 *
+ *      - req : request, body should be a   *
+ *              JSON containing the         *
+ *              filteringcvalues for the    *
+ *              search                      *
+ *      - res : response, sends status and  *
+ *              messages                    *
  *******************************************/
 
+//Test with curl
 //curl -i -X GET -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1OTAwNTMyNzB9.2-h7fMMVs6N6IoRC-Q33O6ApizA-JbU6_3jSocxkYbw' -H 'Content-Type: application/json' -d '{"id": 0}' "http://localhost:1234/ressources"
 
 function get_ressource(req, res){
@@ -366,12 +420,21 @@ function get_ressource(req, res){
 
 
 /********************************************
- * Brief :    Check token validity          *
- *            Proceed to search in the      *
+ * @brief :   Proceeds to search in the     *
  *            database and update the       *
- *            item found                    *
+ *            item found with the           *
+ *            corresponding id using the    *
+ *            values provided by the request*
+ *                                          *
+ * @param :                                 *
+ *      - req : request, body should be a   *
+ *              JSON containing an "id" and *
+ *              a "data" field              *
+ *      - res : response, sends status and  *
+ *              messages                    *
  *******************************************/
 
+//Test with curl
 //curl -i -X PUT -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1ODk3MjI0Mjl9.aXTFOTnY2wHyvNftTExb65n07uk_pJ1o5CnB_C07rXA' -H 'Content-Type: application/json' -d '{"id": 0, "data" : {"msg" : "Hello World", "author" : "me"}}' "http://localhost:1234/ressources"
 
 function put_ressource(req,res){
@@ -432,12 +495,19 @@ function put_ressource(req,res){
 }//End function put_ressource
 
 /********************************************
- * Brief :    Check token validity          *
- *            Proceed to search in the      *
+ * @brief :   Proceeds to search in the     *
  *            database and delete the       *
- *            item found                    *
+ *            item found with the           *
+ *            corresponding id              *
+ * @param :                                 *
+ *      - req : request, body should be a   *
+ *              JSON containing an "id"     *
+ *              field                       *
+ *      - res : response, sends status and  *
+ *              messages                    *
  *******************************************/
 
+//Test with curl
 //curl -i -X DELETE -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1OTAwNTMyNzB9.2-h7fMMVs6N6IoRC-Q33O6ApizA-JbU6_3jSocxkYbw' -H 'Content-Type: application/json' -d '{"id": 1}' "http://localhost:1234/ressources"
 
 function delete_ressource(req,res){
@@ -493,21 +563,14 @@ function delete_ressource(req,res){
 //Hello Word at /
 app.get('/', (req, res) => res.send('Hello World!\n'));
 
-//Retrieve creditentials and send event at /data
 app.post('/users', (req, res) => create_user(req, res));
 
 app.post('/auth/login', (req,res) => login(req, res));
 
-
 app.post('/ressources', (req,res) => post_ressource(req, res));
 app.get('/ressources', (req,res) => get_ressource(req, res));
 app.put('/ressources', (req, res) => put_ressource(req, res));
-app.delete('/ressources' , (req, res ) => delete_ressource(req, res));
+app.delete('/ressources' , (req, res) => delete_ressource(req, res));
 
 //Console output to confirm app is listening
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
-
-//================TOKEN for Tests=========
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJwYXNzd29yZCI6ImEiLCJpYXQiOjE1OTAwNTMyNzB9.2-h7fMMVs6N6IoRC-Q33O6ApizA-JbU6_3jSocxkYbw
-//Until 23.05.2020 11:25
-
