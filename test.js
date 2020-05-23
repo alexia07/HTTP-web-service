@@ -314,7 +314,7 @@ describe('GET server /ressource with correct authorization requiring an unknown 
         .set('Authorization', `Bearer ${token}`)
         .send({"id" : "zzz"})
         .end((err) => {
-            expect(404, `No ressource with the id "zzz" has been found.\n`);
+            expect(404, `No ressource with the following requirements "{"id" : "zzz"}" has been found.\n`);
             if (err) {
             return done(err);
             }

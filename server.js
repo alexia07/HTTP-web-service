@@ -352,7 +352,7 @@ function get_ressource(req, res){
         {
             client.close();
             res.status(404);
-            res.send(`No ressource with the id "${require_json.id}" has been found.\n`);
+            res.send(`No ressource with the following requirements "${JSON.stringify(require_json)}" has been found.\n`);
             return;
         }
         
