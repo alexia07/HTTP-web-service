@@ -59,7 +59,7 @@ function create_user(req, res) {
     
     const urldb = 'mongodb://localhost:27017';
     const dbName = 'userdb';
-    const client = new MongoClient(urldb);
+    const client = new MongoClient(urldb, { useUnifiedTopology: true });
 
     client.connect(async function(err) {
         assert.equal(null, err);
@@ -116,7 +116,7 @@ async function login(req,res){
     
     const urldb = 'mongodb://localhost:27017';
     const dbName = 'userdb';
-    const client = new MongoClient(urldb);
+    const client = new MongoClient(urldb, { useUnifiedTopology: true });
 
     client.connect(async function(err) {
         assert.equal(null, err);
@@ -289,7 +289,7 @@ function post_ressource(req,res){
     //Write in database
     const urldb = 'mongodb://localhost:27017';
     const dbName = 'ressourcedb';
-    const client = new MongoClient(urldb);
+    const client = new MongoClient(urldb, { useUnifiedTopology: true });
 
     client.connect(async function(err) {
         assert.equal(null, err);
@@ -338,7 +338,7 @@ function get_ressource(req, res){
     //Search in database
     const urldb = 'mongodb://localhost:27017';
     const dbName = 'ressourcedb';
-    const client = new MongoClient(urldb);
+    const client = new MongoClient(urldb, { useUnifiedTopology: true });
 
     client.connect(async function(err) {
         assert.equal(null, err);
@@ -391,7 +391,7 @@ function put_ressource(req,res){
     //Search in database the ressource with the corresponding id
     const urldb = 'mongodb://localhost:27017';
     const dbName = 'ressourcedb';
-    const client = new MongoClient(urldb);
+    const client = new MongoClient(urldb, { useUnifiedTopology: true });
 
     client.connect(async function(err) {
         assert.equal(null, err);
@@ -457,7 +457,7 @@ function delete_ressource(req,res){
     //Search in database the ressource with the corresponding id
     const urldb = 'mongodb://localhost:27017';
     const dbName = 'ressourcedb';
-    const client = new MongoClient(urldb);
+    const client = new MongoClient(urldb, { useUnifiedTopology: true });
 
     client.connect(async function(err) {
         assert.equal(null, err);
