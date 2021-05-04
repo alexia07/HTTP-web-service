@@ -20,3 +20,6 @@ Now that the server is running, the tests can be performed.
 Open the terminal in the project folder and run the following command
 
     > ./node_modules/mocha/bin/mocha 
+
+
+__ test__
